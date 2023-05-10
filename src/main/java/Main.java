@@ -1,6 +1,6 @@
 import Model.BankAccount;
 import Util.JsonSerialize;
-import enums.AccountType;
+import enums.AccountStatus;
 import repository.AccountRepositoryImpl;
 
 import java.util.List;
@@ -10,13 +10,13 @@ import java.util.function.Predicate;
 public class Main {
     public static void main(String[] args) {
         JsonSerialize<BankAccount>bankAccountJsonSerialize=new JsonSerialize<>();
-        AccountRepositoryImpl accountRepository=new AccountRepositoryImpl();
+        AccountRepositoryImpl accountRepository=AccountRepositoryImpl.getInstance();
 
         accountRepository.populateData();
 
         List<BankAccount> bankAccountList = accountRepository.
                 searchAccount(bankAccount ->
-                 bankAccount.getType().equals(AccountType.CURRENT_ACCOUNT));
+                    bankAccount.getStatus().equals(AccountStatus.ACTIVATED));
 
         bankAccountList.stream().map(acc->bankAccountJsonSerialize.toJson(acc))
                 .forEach(System.out::println);
