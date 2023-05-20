@@ -23,9 +23,15 @@ public class AccountRepositoryImpl implements AccountRepository {
     private long accountCount=0;
     @Override
     public BankAccount save(BankAccount bankAccount) {
-        Long account_Id=++accountCount;
+        Long account_Id;
+        synchronized (this){
+            account_Id =++accountCount; //critical zone
+        }
         bankAccount.setAccountId(account_Id);
-        bankAccountMap.put(account_Id,bankAccount);
+        synchronized (this){
+            bankAccountMap.put(account_Id,bankAccount);
+        }
+
         return bankAccount;
     }
 

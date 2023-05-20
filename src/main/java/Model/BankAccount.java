@@ -3,12 +3,17 @@ package Model;
 import enums.AccountStatus;
 import enums.AccountType;
 
-public class BankAccount {
+public class BankAccount implements Cloneable {
     private Long accountId;
     private double balance;
     private String currency;
     private AccountType type;
     private AccountStatus status;
+    private Customer customer;
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 
     @Override
     public String toString() {
@@ -18,8 +23,14 @@ public class BankAccount {
                 ", currency='" + currency + '\'' +
                 ", type=" + type +
                 ", status=" + status +
+                ", customer=" + customer +
                 '}';
     }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
 
     public BankAccount() {
     }
@@ -31,6 +42,7 @@ public class BankAccount {
         this.type = type;
         this.status = status;
     }
+
 
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
@@ -101,5 +113,12 @@ public class BankAccount {
         }
 
     }
+    @Override
+    public BankAccount clone() throws CloneNotSupportedException {
+        BankAccount clone = (BankAccount) super.clone();
+        clone.setCustomer(this.customer.clone());
+        return clone;
+    }
+
 
 }
